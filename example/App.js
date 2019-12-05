@@ -2,7 +2,7 @@
 angular.module('App', [])
 .controller('MyAppCtrl', ['$scope',
 	($scope) => {
-		$scope.componentTitle ='Компонент1';
+		$scope.componentTitle ='Component1';
 		const ctrl1Galinka = new Galinka();
 		const module1State = ctrl1Galinka.getState('module1');
 		const module2State = ctrl1Galinka.getState('module2');
@@ -22,7 +22,7 @@ angular.module('App', [])
 	}])
 	.controller('MyAppCtrl2', ['$scope',
 	($scope) => {
-		$scope.componentTitle ='Компонент2';
+		$scope.componentTitle ='Component2';
 		const ctrl2Galinka = new Galinka();
 		$scope.allAppState = ctrl2Galinka.getState();
 	}]);

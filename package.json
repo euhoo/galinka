@@ -15,7 +15,8 @@
     "state"
   ],
   "files": [
-    ""
+		"README.MD",
+		"galinka.js"
   ],
   "author": "Evgeniy Kvach",
   "license": "ISC",
