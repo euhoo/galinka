@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en"
+			ng-app='App'>
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport"
+				content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible"
+				content="ie=edge">
+	<title>Example of Galinka using</title>
+	<link rel="stylesheet"
+				href="example/css/main.css">
+	<script src="example/libs/socket.io.js"></script>
+	<script src="example/libs/angular.js"></script>
+	<script src="node_modules/ebike/ebike.js"></script>
+	<script src="example/App.js"></script>
+	<!-- <script src="example/Ctrl2.js"></script> -->
+</head>
+
+<body>
+
+	<div ng-controller="MyAppCtrl"
+			 class='controller1'>
+		<h3>{{componentTitle}}</h3>
+		<div>
+			<span>
+				state of module2:
+			</span>
+			<span>
+				{{data2}}
+			</span>
+		</div>
+		<div>
+			<span>
+				state of module1:
+			</span>
+			<span>
+				{{data1Obj}}
+			</span>
+		</div>
+		<div>
+			<span>
+				state of all App:
+			</span>
+			<span>
+				{{allAppState}}
+			</span>
+		</div>
+		<input type="text"
+					 ng-model="inputModel1"
+					 ng-change="setInput1(inputModel1)">
+		<input type="text"
+					 ng-model="inputModel2"
+					 ng-change="setInput2(inputModel2)">
+		<div>
+			<span>
+				data form input1:
+			</span>
+			<span>
+				{{allAppState.ctrl1.input1}}
+			</span>
+		</div>
+		<div>
+				<span>
+					data form input2:
+				</span>
+				<span>
+					{{allAppState.ctrl1.input2}}
+				</span>
+			</div>
+
+	</div>
+	<div ng-controller="MyAppCtrl2"
+			 class='controller2'>
+		<h3>{{componentTitle}}</h3>
+		<div>
+			<span>
+				data form input:
+			</span>
+			<span>
+				{{allAppState.ctrl1.input}}
+			</span>
+		</div>
+
+	</div>
+
+	<script src="galinka.js"></script>
+	<script src="example/module1.js"></script>
+	<script src="example/module2.js"></script>
+</body>
+
+</html>

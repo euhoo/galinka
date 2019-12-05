@@ -1,0 +1,25 @@
+{
+  "name": "galinka",
+  "version": "0.0.1",
+  "description": "simple app state driving",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node ./node_modules/ebike/ebike.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/euhoo/galina"
+  },
+  "keywords": [
+    "state"
+  ],
+  "files": [
+    ""
+  ],
+  "author": "Evgeniy Kvach",
+  "license": "ISC",
+  "devDependencies": {
+    "ebike": "=0.1.2"
+  }
+}
