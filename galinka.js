@@ -1,4 +1,4 @@
-class Galinka {
+export default class Galinka {
 	constructor(storeName) {
 		this.storeName = storeName;
 		if (!this.__proto__.isAppInited) this.initStoreApp();
