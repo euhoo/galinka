@@ -3,44 +3,33 @@ class Galinka {
 		this.storeName = storeName;
 		if (!this.__proto__.isAppInited) this.initStoreApp();
 	}
-
-	
-
-	setState = (state, data) => {
-		const oldState = this.__proto__.stores[state] ? this.__proto__.stores[state] : {};
-		const newState = { ...oldState, state };
-		this.__proto__.stores[state] = this.__proto__.stores[state] ? { ...this.__proto__.stores[state], ...data } : { ...data };
-		//добавлять здесь историю после того как корректно буду добавлять обновлять state
-	}
-
-	getState = (state) => {
-		if (!this.__proto__.isAppInited) return console.error('Galinka have not been inited and there is no state here. Please use Galinka.setState() before')
-		if (!state) return this.__proto__.stores;
-		return this.__proto__.stores[state];
-	}
-
-	setStore = (type, newStore) => {
+	updateStore = (type, data) => {
 		const storeConstructor = this.storeConstructors[this.storeName][type];
-		const updatedStore = storeConstructor(newStore);
-		const updatedStores = this.__protp__.stores.map(item => {
-			if (item.type === type) return updatedStore;
-			return item;
-		});
-		this.__proto__.stores = updatedStores;
+		const currentStore = this.__proto__.stores[this.storeName];
+		const updatedStore = storeConstructor(data, currentStore);
+		this.__proto__.stores[this.storeName] =  updatedStore;
+		this.addToHistory(this.__proto__.stores)
 	}
+	getStore = (storeName = this.storeName) => {
+		if(storeName) return this.__proto__.stores[storeName];
+	}
+	getAllStores = () => this.__proto__.stores;
 
-	setStoreConstructor = (storeConstructorObj) => {
+	addStoreConstructor = (storeConstructorObj) => {
 		//здесь все конструкторы Store пишутся в прототип
-		const { type, func } = storeConstructorObj;
+		const { type, updateFunc } = storeConstructorObj;
 		this.storeConstructors[this.storeName] = this.storeConstructors[this.storeName] ?
-			{ ...this.storeConstructors[storeName], [type]: func }
+			{ ...this.storeConstructors[this.storeName], [type]: updateFunc }
 			:
-			{ [type]: func };
-			console.log(this.__proto__.storeConstructors)
+			{ [type]: updateFunc };
 	}
 
-	addHistory = (currentAppState) => {
-		this.__proto__.history = [...this.__proto__.history, currentAppState];
+	addStoreConstructors = (arrOfStoreConstructors) => {
+		arrOfStoreConstructors.forEach((item) => this.addStoreConstructor(item));
+	}
+
+	addToHistory = (currentAppStores) => {
+		this.__proto__.history = [...this.__proto__.history, currentAppStores];
 	}
 
 	initStoreApp = () => {
@@ -49,4 +38,5 @@ class Galinka {
 		if (!this.__proto__.storeConstructors) this.__proto__.storeConstructors = {};
 		this.__proto__.isAppInited = true;
 	}
+
 }

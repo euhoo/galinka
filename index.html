@@ -1,102 +1,21 @@
 <!DOCTYPE html>
-<html lang="en"
-			ng-app='App'>
+<html lang="en" ng-app='App'>
 
 <head>
 	<meta charset="UTF-8">
-	<meta name="viewport"
-				content="width=device-width, initial-scale=1, shrink-to-fit=no">
-	<meta http-equiv="X-UA-Compatible"
-				content="ie=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
 	<!-- Bootstrap CSS -->
-	<link rel="stylesheet"
-				href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
-				integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
-				crossorigin="anonymous">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+		integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 
 	<title>Example of Galinka using</title>
-	<link rel="stylesheet"
-				href="example/css/main.css">
-	<script src="example/libs/socket.io.js"></script>
-	<script src="example/libs/angular.js"></script>
-	<script src="node_modules/ebike/ebike.js"></script>
-	<script src="example/App.js"></script>
-	<!-- <script src="example/Ctrl2.js"></script> -->
 </head>
 
 <body>
-	<h2>Page for testing Galinka state manager</h2>
-	<div ng-controller="MyAppCtrl"
-			 class='controller1'>
-		<h3>{{componentTitle}}</h3>
-		<div>
-			<span>
-				state of module2:
-			</span>
-			<span>
-				{{data2}}
-			</span>
-		</div>
-		<div>
-			<span>
-				state of module1:
-			</span>
-			<span>
-				{{data1Obj}}
-			</span>
-		</div>
-		<div>
-			<span>
-				state of all App:
-			</span>
-			<span>
-				{{allAppState}}
-			</span>
-		</div>
-		<input type="text"
-					 ng-model="inputModel1"
-					 ng-change="setInput1(inputModel1)">
-		<input type="text"
-					 ng-model="inputModel2"
-					 ng-change="setInput2(inputModel2)">
-					 <div class="btn btn-success" ng-click="add(inputModel1)">Добавить</div>
-					 <div></div>
-					 
-		<div>
-			<span>
-				data form input1:
-			</span>
-			<span>
-				{{allAppState.ctrl1.input1}}
-			</span>
-		</div>
-		<div>
-			<span>
-				data form input2:
-			</span>
-			<span>
-				{{allAppState.ctrl1.input2}}
-			</span>
-		</div>
+	<div id="root"></div>
+	<script type="text/javascript" src="main.js"></script>
 
-	</div>
-	<div ng-controller="MyAppCtrl2"
-			 class='controller2'>
-		<h3>{{componentTitle}}</h3>
-		<div>
-			<span>
-				data form input1:
-			</span>
-			<span>
-				{{allAppState.ctrl1.input1}}
-			</span>
-		</div>
-
-	</div>
-	<script src="galinka.js"></script>
-	<script src="example/storeConstruct.js"></script>
-	<script src="example/module1.js"></script>
-	<script src="example/module2.js"></script>
 </body>
 
 </html>
