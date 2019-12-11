@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import Galinka from '../../galinka';
-import { uniqueId } from 'lodash';
+import uniqueid from 'lodash.uniqueid';
 
 const inputStore = new Galinka('anotherToDos');
 
@@ -11,7 +11,7 @@ export default class AnotherInputComponent extends Component {
 
     inputHandler = (value) => {
         const data = {
-            id: uniqueId(),
+            id: uniqueid(),
             data: value,
         };
         inputStore.updateStore('add', data);
@@ -29,7 +29,7 @@ export default class AnotherInputComponent extends Component {
         const btn = <div className="btn btn-success" onClick={() => this.inputHandler(this.state.value)}>ADD</div>
         return (
             <React.Fragment>
-                <div>input2</div>
+                <div>another input</div>
                 {input}
                 {btn}
             </React.Fragment>

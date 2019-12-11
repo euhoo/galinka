@@ -1,4 +1,4 @@
-import { cloneDeep } from 'lodash';
+import clonedeep from 'lodash.clonedeep';
 
 export default class Galinka {
 	constructor(storeName) {
@@ -11,7 +11,7 @@ export default class Galinka {
 		const currentStore = this.__proto__.stores[this.storeName];
 		const updatedStore = storeConstructor(data, currentStore);
 		this.__proto__.stores[this.storeName] = updatedStore;
-		if (this.__proto__.isHistory) {
+		if (this.__proto__.settings.isHistory) {
 			this.addToHistory(this.__proto__.stores);
 			const history = this.getFullHistory();
 			console.log(history);
@@ -66,15 +66,15 @@ export default class Galinka {
 	};
 
 	addToHistory = (currentAppStores) => {
-		if (!this.__proto__.isHistory) {
+		if (!this.__proto__.settings.isHistory) {
 			throw new Error('History is disabled. For using this method please execute enableHistory method at Galinka settings or any instance of Galinka');
 		}
-		const current = cloneDeep(currentAppStores);
+		const current = clonedeep(currentAppStores);
 		this.__proto__.history = [...this.__proto__.history, current];
 	};
 
 	getFullHistory = () => {
-		if (!this.__proto__.isHistory) {
+		if (!this.__proto__.settings.isHistory) {
 			throw new Error('History is disabled. For using this method please execute enableHistory method at Galinka settings or any instance of Galinka');
 		};
 		return this.history;

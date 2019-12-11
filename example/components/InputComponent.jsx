@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import Galinka from '../../galinka';
-import { uniqueId } from 'lodash';
+import uniqueid from 'lodash.uniqueid';
 
 const inputStore = new Galinka('toDos');
 
@@ -11,7 +11,7 @@ export default class InputComponent extends Component {
 
     inputHandler = (value) => {
         const data = {
-            id: uniqueId(),
+            id: uniqueid(),
             data: value,
         };
         inputStore.updateStore('add', data);
