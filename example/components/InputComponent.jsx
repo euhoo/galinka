@@ -7,7 +7,7 @@ const inputStore = new Galinka('toDos');
 export default class InputComponent extends Component {
     state = {
         value: '',
-    }
+    };
 
     setInput = (value) => {
         const data = {
@@ -16,16 +16,16 @@ export default class InputComponent extends Component {
         };
         inputStore.updateStore('add', data);
         this.setState({ value: '' })
-    }
+    };
 
     change = ({ target }) => {
         const { value } = target;
         this.setState({ value })
-    }
-    
+    };
+
     render = () => {
         const input = <input type="text" onChange={this.change} value={this.state.value}/>
-        const btn = <div className="btn btn-success" onClick={() => this.setInput(this.state.value)}>ADD</div>       
+        const btn = <div className="btn btn-success" onClick={() => this.setInput(this.state.value)}>ADD</div>
         return (
             <React.Fragment>
                 {input}
