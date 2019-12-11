@@ -13,22 +13,9 @@ export default () => {
 		},
 	];
 
-	const toDos = new Galinka('toDos'); //we need ta add name of Store here as a function argument
+	const toDos = new Galinka('anotherToDos');
 
 	const del = (id, oldState = []) => oldState.filter(item => !(item.id === id));
 	const add = (data, oldState = []) => [data, ...oldState];
-
-	/* const addFuncObj = {
-		type: 'add',
-		updateFunc: add,
-	};
-
-	const delFuncObj = {
-		type: 'del',
-		updateFunc: del,
-	}; */
-
-	//toDos.addStoreConstructor(add);
-	//toDos.addStoreConstructor(del);
 	toDos.addStoreConstructors([{ type: 'add', updateFunc: add }, { type: 'del', updateFunc: del }]);
 };

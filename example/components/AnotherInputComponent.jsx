@@ -2,9 +2,9 @@ import React, { Component } from "react";
 import Galinka from '../../galinka';
 import { uniqueId } from 'lodash';
 
-const inputStore = new Galinka('toDos');
+const inputStore = new Galinka('anotherToDos');
 
-export default class InputComponent extends Component {
+export default class AnotherInputComponent extends Component {
     state = {
         value: '',
     };
@@ -24,12 +24,12 @@ export default class InputComponent extends Component {
     };
 
     render = () => {
-        console.log('rendering INPUT');
+        console.log('rendering ANOTHER INPUT');
         const input = <input type="text" onChange={this.change} value={this.state.value}/>
         const btn = <div className="btn btn-success" onClick={() => this.inputHandler(this.state.value)}>ADD</div>
         return (
             <React.Fragment>
-                <div>input1</div>
+                <div>input2</div>
                 {input}
                 {btn}
             </React.Fragment>

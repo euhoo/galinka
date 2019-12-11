@@ -1,6 +1,17 @@
-.controller1{
+.element{
+	margin:20px;
+	padding:10px;
+	background-color: rgba(211, 211, 211, 0.336);
+	float:left;
+	min-height: 200px;
+	
+}
+.element-left{
 	border: 1px solid green;
 }
-.controller2{
-	border: 1px solid blue;
+.element-right{
+	border: 1px solid red;
+}
+.element-wrapper {
+	margin: 0 auto;
 }

@@ -1,3 +1,5 @@
+import { cloneDeep } from 'lodash';
+
 export default class Galinka {
 	constructor(storeName) {
 		this.storeName = storeName;
@@ -9,19 +11,32 @@ export default class Galinka {
 		const currentStore = this.__proto__.stores[this.storeName];
 		const updatedStore = storeConstructor(data, currentStore);
 		this.__proto__.stores[this.storeName] = updatedStore;
-		this.addToHistory(this.__proto__.stores);
+		if (this.__proto__.isHistory) {
+			this.addToHistory(this.__proto__.stores);
+			const history = this.getFullHistory();
+			console.log(history);
+		};
 		this.executeStateFuncs(this.__proto__.stateFuncs);
+	};
+
+	enableHistory = () => {
+		this.__proto__.settings.isHistory = true;
+	};
+
+	disableHistory = () => {
+		this.__proto__.settings.isHistory = false;
 	};
 
 	executeStateFuncs = (arrOfFuncObjs = []) => {
 		arrOfFuncObjs.forEach(funcObj => {
 			if (funcObj.storeName === this.storeName) {
-				const {stateFunc} = funcObj;
+				const { stateFunc } = funcObj;
 				stateFunc();
 			}
 			if (funcObj.storeName === '') {
 				//	ToDo решить что делать в этой ситуации. Это ситуация, когда инстанс класса инициализирован без
 				//	аргументом и addStateFunc вызван без второго аргумента
+				throw new Error('You made instance of Galinka without store name and execute addStateFunc without store name')
 			}
 		});
 	};
@@ -39,13 +54,11 @@ export default class Galinka {
 	getAllStores = () => this.__proto__.stores;
 
 	addStoreConstructor = (storeConstructorObj) => {
-		const {type, updateFunc} = storeConstructorObj;
-		const obj = {[type]: updateFunc, id: this.addId()};
+		const { type, updateFunc } = storeConstructorObj;
 		this.storeConstructors[this.storeName] = this.storeConstructors[this.storeName] ?
-			{...this.storeConstructors[this.storeName], [type]: updateFunc, id: this.addId()}
+			{ ...this.storeConstructors[this.storeName], [type]: updateFunc, id: this.addId() }
 			:
-			{[type]: updateFunc, id: this.addId()};
-		console.log(this.storeConstructors);
+			{ [type]: updateFunc, id: this.addId() };
 	};
 
 	addStoreConstructors = (arrOfStoreConstructors) => {
@@ -53,10 +66,19 @@ export default class Galinka {
 	};
 
 	addToHistory = (currentAppStores) => {
-		this.__proto__.history = [...this.__proto__.history, currentAppStores];
+		if (!this.__proto__.isHistory) {
+			throw new Error('History is disabled. For using this method please execute enableHistory method at Galinka settings or any instance of Galinka');
+		}
+		const current = cloneDeep(currentAppStores);
+		this.__proto__.history = [...this.__proto__.history, current];
 	};
 
-	getFullHistory = () => this.history;
+	getFullHistory = () => {
+		if (!this.__proto__.isHistory) {
+			throw new Error('History is disabled. For using this method please execute enableHistory method at Galinka settings or any instance of Galinka');
+		};
+		return this.history;
+	};
 
 	initStoreApp = () => {
 		//ToDo поместить все объекты ниже в один
@@ -64,7 +86,9 @@ export default class Galinka {
 		if (!this.__proto__.history) this.__proto__.history = [];
 		if (!this.__proto__.storeConstructors) this.__proto__.storeConstructors = {};
 		if (!this.__proto__.stateFuncs) this.__proto__.stateFuncs = [];
-		if(!this.__proto__.uniqueIdCounter) this.__proto__.uniqueIdCounter = 1;
+		if (!this.__proto__.uniqueIdCounter) this.__proto__.uniqueIdCounter = 1;
+		if (!this.__proto__.settings) this.__proto__.settings = {};
+		this.__proto__.settings.isHistory = false;
 		this.__proto__.isAppInited = true;
 	};
 
@@ -73,5 +97,5 @@ export default class Galinka {
 		return this.__proto__.uniqueIdCounter;
 	};
 
-	addStateFunc = (stateFunc, storeName = this.storeName || '') => this.__proto__.stateFuncs.push({ stateFunc, storeName, id:this.addId() });
+	addStateFunc = (stateFunc, storeName = this.storeName || '') => this.__proto__.stateFuncs.push({ stateFunc, storeName, id: this.addId() });
 }
