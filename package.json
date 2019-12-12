@@ -1,6 +1,6 @@
 {
   "name": "galinka",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "simple app state driving",
   "main": "index.js",
   "scripts": {
@@ -8,15 +8,14 @@
     "start": "webpack-dev-server --open --config example.webpack.config.js",
     "build": "webpack",
     "build:ex": "webpack --config example.webpack.config.js",
-    "watch": "webpack --watch",
-    "prepublish": "npm run build"
+    "watch": "webpack --watch"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/euhoo/galina"
+    "url": "https://github.com/euhoo/galinka"
   },
   "keywords": [
-    "state"
+    "state manager"
   ],
   "files": [
     "README.MD",
