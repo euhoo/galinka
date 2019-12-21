@@ -1,21 +1,21 @@
 {
   "name": "galinka",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "simple app state driving",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "webpack-dev-server --open --config example.webpack.config.js",
     "build": "webpack",
-    "watch": "webpack --watch",
-    "prepublish": "npm run build"
+    "build:ex": "webpack --config example.webpack.config.js",
+    "watch": "webpack --watch"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/euhoo/galina"
+    "url": "https://github.com/euhoo/galinka"
   },
   "keywords": [
-    "state"
+    "state manager"
   ],
   "files": [
     "README.MD",
@@ -36,13 +36,13 @@
     "style-loader": "^1.0.1",
     "webpack": "^4.41.2",
     "webpack-cli": "^3.3.10",
-    "webpack-dev-server": "^3.9.0"
-  },
-  "dependencies": {
+    "webpack-dev-server": "^3.9.0",
     "@babel/plugin-proposal-class-properties": "^7.7.4",
-    "lodash.clonedeep": "^4.5.0",
     "lodash.uniqueid": "^4.0.1",
     "react": "^16.12.0",
     "react-dom": "^16.12.0"
+  },
+  "dependencies": {
+    "lodash.clonedeep": "^4.5.0"
   }
 }
