@@ -3,18 +3,18 @@ Very simple library for driving your app's state.
 Пример использования на React.  
 
 <h1> Использование</h1> 
-<h2 id="contents">Оглавление</h2> 
-<a href="install">Установка</a>
-<a href="driver">1.Компонент, загружающий данные в хранилище.</a>   
-<a href="driven">2.Компонент, получающий данные из хранилища.</a>  
-<a href="storeConstructor">3.Настройка storeConstructors. аналог reducers в redux.</a>  
-<a href="features">4.Дополнительные возможности.</a>  
+<h2 id="#contents">Оглавление</h2> 
+<a href="#install">Установка</a>  
+<a href="#driver">1.Компонент, загружающий данные в хранилище.</a>    
+<a href="#driven">2.Компонент, получающий данные из хранилища.</a>  
+<a href="#storeConstructor">3.Настройка storeConstructors. аналог reducers в redux.</a>  
+<a href="#features">4.Дополнительные возможности.</a>  
   
 <h3>1.Установка</h3>
 ```
 npm i galinka --save
 ``` 
-<h3 id="driver">1. В компоненте, который загружает данные в хранилище<h3> 
+<h3 id="driver">1. В компоненте, который загружает данные в хранилище</h3> 
 <s color="blue">(в примере /example/components/InputComponent.jsx)</s>  
 
 
