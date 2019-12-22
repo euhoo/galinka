@@ -4,19 +4,15 @@ Very simple library for driving your app's state.
 
 <h1> Использование</h1> 
 <h2 id="#contents">Оглавление</h2> 
-<a href="#install">1.Установка</a>  
-
+<a href="#install">1.Установка</a>    
 <a href="#driver">2.Компонент, загружающий данные в хранилище.</a>    
-
 <a href="#driven">3.Компонент, получающий данные из хранилища.</a>  
-
 <a href="#storeConstructor">4.Настройка storeConstructors. аналог reducers в redux.</a>  
-
 <a href="#features">5.Дополнительные возможности.</a>  
 
   
 <h3>1.Установка</h3>
-```
+```js
 npm i galinka --save
 ``` 
 <h3 id="driver">2. В компоненте, который загружает данные в хранилище</h3> 
@@ -24,16 +20,16 @@ npm i galinka --save
 
 
     а)импортируй класс  
-    ```aidl
+    ```js
     import Galinka from '../../galinka';
     ```
     б)создай новый инстанс класса. Аргументом передай название хранилища.  
-    ```aidl
+    ```js
     const inputStore = new Galinka('toDos');
     ``` 
     Данный инстанс будет использоваться для взаимодействия с хранилищем. Если в компоненте используются разные хранилища, то  необходимо создавать разные инстансы класса Galinka.  
     в)для того, чтобы поместить данные в хранилище на инстансе Galinka для данного хранилища(определяем по названию, переданному при инициализации инстанса) вызови метод inputStore.updateStore('add', data); :  
-     ```aidl
+     ```js
        inputStore.updateStore('add', data);
      ```
    где первый аргумент функции - название метода обработки данных(см.ниже) для данного хранилища, а второй - данные.  
@@ -47,13 +43,13 @@ npm i galinka --save
     Если нужно использовать несколько хранилищ, то есть несколько вариантов:  
 
         1)сделай несколько инстансов класса Galinka, в каждый единственным аргументом передай название соответствующего хранилища:  
-         ```aidl
+         ```js
          const toDosStoreInstance = new Galinka('toDos');
          const someNextStoreInstance = new Galinka('someNextStore');
          ```  
 
          и для каждого инстанса далее вызови метод  
-         ```aidl
+         ```js
          const toDosStore = toDosStoreInstance.getStore();
          const someNextStore = someNextStoreInstance.getStore();
          ```  
@@ -61,17 +57,17 @@ npm i galinka --save
         возвращаться будет хранилище по названию, заданному аргументом при инициализации  
           
         2)сделай один инстанс класса Galinka, куда передай название любого(можно основного) хранилища.  
-          ```
+          ```js
           const toDosStoreInstance = new Galinka('toDos');
           ```  
 
           или без аргумента:  
-          ```
+          ```js
           const toDosStoreInstance = new Galinka();
           ```  
 
           и для каждого требуемого хранилища выполни:  
-          ```
+          ```js
           const toDosStore = toDosStoreInstance.getStore('toDos');
           const someNextStore = toDosStoreInstance.getStore('someNextStore');
           ```  
@@ -83,17 +79,17 @@ npm i galinka --save
 
 
         3)сделай один инстанс класса Galinka, куда передай название любого(можно основного) хранилища.  
-           ```
+           ```js
            const toDosStoreInstance = new Galinka('toDos');
            ```  
 
            для получения всех хранилищ выполнить:
-           ```
+           ```js
            const allStores = toDosStoreInstance.getAllStores();
            ```
            из константы allStores получить необходимый store
     г) добавь функции,вызывающие перерендеринг страницы в место, где вызов происходит один раз:
-        ```
+        ```js
         componentDidMount = () => {
                 inputStore.addStateFunc(this.state, 'toDos');
             };
@@ -107,19 +103,19 @@ npm i galinka --save
        Удобно выполнять в отдельной папке в отдельных файлах для каждого store.  
        В примере это папка /examples/storeConstructors, файл toDos.js  
        а)импортируй класс  
-           ```
+           ```js
            import Galinka from '../../galinka';
            ```
 
        б)создай новый инстанс класса. Аргументом передать название хранилища.Здесь аргумент обязателен  
-           ```
+           ```js
            const inputStoreInstance = new Galinka('toDos');
            ```  
 
        в)задай все функции обработчики данного хранилища.  
        У каждой функции обработчика первый аргумент - данные, второй - старое хранилище.  
        Возвращать функция должна новый store:  
-        ```sh
+        ```js
         const del = (id, oldState = []) => oldState.filter(item => !(item.id === id));
         const add = (data, oldState = []) => [data, ...oldState];
         ```  
@@ -129,7 +125,7 @@ npm i galinka --save
 
         г)Структура store - не зона ответственности Galinka. Ты задаешь структуру самостоятельно.  
         Хорошая практика - указывать структуру данного хранилища в начале файла:  
-       ```sh
+       ```js
        const thisStoreStructure = [
        		{
        			id:'someUniqueId',
@@ -143,7 +139,7 @@ npm i galinka --save
        	```  
 
        	д)Добавь функции-обработчики текущего store. Для каждой функции создай объект вида  
-       	   ```
+       	   ```js
        	   const addObj = {
            		type: 'add',
            		updateFunc: add,
@@ -161,12 +157,12 @@ npm i galinka --save
        	   далее есть 2 варианта:  
 
        	   1)Функций несколько: на инстансе класса Galinka вызови функцию addStoreConstructors куда передай массив сформированных выше объектов:  
-       	   ```
+       	   ```js
        	   toDos.addStoreConstructors([addFuncObj, delFuncObj]);
        	   ```  
 
        	   2)Функция одна.на инстансе класса Galinka вызови функцию addStoreConstructor, куда передай сформированный выше объект:  
-       	   ```
+       	   ```js
        	   toDos.addStoreConstructor(addFuncObj);
        	   ```
        	е)Подключи файлы конструкторов store к проекту, например проимпортировав их в js точке входа проекта или подключив скриптом в html точке входа  
