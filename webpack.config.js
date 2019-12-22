@@ -4,9 +4,10 @@ module.exports = {
     entry: './galinka.js',
     mode: 'development',
     output: {
-        filename: 'galinka.min.js',
-        path: path.resolve(__dirname, 'build'),
-    },
+        library: 'galinka',
+         path: path.resolve(__dirname, 'build'),
+         filename: './galinka.js'
+     },
     module: {
         rules: [
             {

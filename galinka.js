@@ -19,7 +19,7 @@ storeConstructors, а в коллбэке передавать функцию, �
 
 */
 
-export default class Galinka {
+ class Galinka {
 	constructor(storeName) {
 		this.storeName = storeName;
 		if (!this.__proto__.galinka) this.initStoreApp();
@@ -121,3 +121,4 @@ addToHistory = (currentAppStores) => {
 	};
 	*/
 }
+export default (name) => new Galinka(name);

@@ -1,4 +1,4 @@
-import Galinka from '../../build/galinka';
+import G from '../../build/galinka';
 
 export default () => {
 
@@ -13,7 +13,7 @@ export default () => {
 		},
 	];
 
-	const toDos = new Galinka('toDos'); //we need ta add name of Store here as a function argument
+	const toDos = G('toDos'); //we need ta add name of Store here as a function argument
 
 	const del = (id, oldState = []) => oldState.filter(item => !(item.id === id));
 	const add = (data, oldState = []) => [data, ...oldState];

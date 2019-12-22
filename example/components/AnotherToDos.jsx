@@ -1,7 +1,7 @@
 import React, { Component } from "react";
-import Galinka from '../../build/galinka';
+import G from '../../build/galinka';
 
-const inputStore = new Galinka('anotherToDos');
+const inputStore = G('anotherToDos');
 
 export default class AnotherToDos extends Component {
     state = {

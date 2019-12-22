@@ -1,8 +1,8 @@
 import React, { Component } from "react";
-import Galinka from '../../build/galinka';
+import G from '../../build/galinka';
 import uniqueid from 'lodash.uniqueid';
 
-const inputStore = new Galinka('toDos');
+const inputStore = G('toDos');
 
 export default class InputComponent extends Component {
     state = {
