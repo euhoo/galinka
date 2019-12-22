@@ -1,4 +1,4 @@
-import Galinka from '../../galinka';
+import Galinka from '../../build/galinka';
 
 export default () => {
 

@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import Galinka from '../../galinka';
+import Galinka from '../../build/galinka';
 import uniqueid from 'lodash.uniqueid';
 
 const inputStore = new Galinka('toDos');

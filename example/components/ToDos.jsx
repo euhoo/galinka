@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import Galinka from '../../galinka';
+import Galinka from '../../build/galinka';
 
 const inputStore = new Galinka('toDos');
 
