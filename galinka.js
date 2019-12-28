@@ -19,12 +19,12 @@ reducers, а в коллбэке передавать функцию, измен
 
 */
 
- class Galinka {
+class Galinka {
 	constructor(storeName) {
 		this.storeName = storeName;
 		if (!this.__proto__.G) this.init();
 	}
-	
+
 	init = () => {
 		this.__proto__.G = {
 			stores: {},
@@ -36,6 +36,11 @@ reducers, а в коллбэке передавать функцию, измен
 				isHistory: false,
 			},
 		};
+	};
+
+	delProperty = (obj, id) => {
+		// в будущем реализовать что-то попроизводительнее
+		delete obj[id];
 	};
 
 	addId = () => this.__proto__.G.currentId++;
@@ -50,7 +55,7 @@ reducers, а в коллбэке передавать функцию, измен
 			}
 			if (storeName === '') {
 				//создание инстанса без имени - ошибка
-				throw new Error('You made instance of Galinka and execute addStateFunc method without store name')
+				throw new Error('You made instance of Galinka and execute addRenderFunc method without store name')
 			}
 		});
 	};
@@ -65,12 +70,13 @@ reducers, а в коллбэке передавать функцию, измен
 
 	addReducers = (arrOfreducers) => arrOfreducers.forEach(this.addReducer);
 
-	addStateFunc = (stateFunc, storeName = this.storeName || '', id = 'notSetted') => this.__proto__.G.renderFuncs[id] = { stateFunc, storeName, id };
+	addRenderFunc = (stateFunc, storeName = this.storeName || '', id = 'notSetted') => this.__proto__.G.renderFuncs[id] = { stateFunc, storeName, id };
+	delRenderFunc = (id) => this.delProperty(this.__proto__.G.renderFuncs, id)
 
 	updateStore = (type, data) => {
 		const reducer = this.__proto__.G.reducers[this.storeName][type];
 		const currentStore = this.__proto__.G.stores[this.storeName];
-		this.__proto__.G.stores[this.storeName] = reducer(data, currentStore);;
+		this.__proto__.G.stores[this.storeName] = reducer(data, currentStore);
 		if (this.__proto__.G.settings.isHistory) {
 			/* отключаю пока history */
 			// this.addToHistory(this.__proto__.G.stores);

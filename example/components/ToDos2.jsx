@@ -2,12 +2,15 @@ import React, { Component } from "react";
 import G from '../../build/galinka';
 
 const inputStore = G('toDos');
+const id = 'toDosID2';
 
 export default class ToDos extends Component {
     state = {
         data: '',
     };
-    componentDidMount = () => inputStore.addStateFunc(() => this.setState({}), 'toDos', 'toDosID2');
+    componentDidMount = () => inputStore.addRenderFunc(() => this.setState({}), 'toDos', id);
+
+    componentWillUnmount =() => inputStore.delRenderFunc(id);
 
     render() {
         console.log('rendering TODOS2');

@@ -4,9 +4,20 @@ import ToDos from './ToDos.jsx';
 import AnotherInputComponent from './AnotherInputComponent.jsx';
 import AnotherToDos from './AnotherToDos.jsx';
 import ToDos2 from './ToDos2.jsx';
+import G from '../../build/galinka';
+import VisibilityBtn from './VisibilityBtn.jsx';
 
+const visibilityStoreName = 'anotherInputVisibility'
+const inputVisibilityStore = G(visibilityStoreName);
+const id = 'visibility';
 class MyComponent extends Component {
+  
+  componentDidMount = () => inputVisibilityStore.addRenderFunc(() => this.setState({}), visibilityStoreName, id);
+
+  componentWillUnmount = () => inputVisibilityStore.delRenderFunc(id);
+
   render() {
+    const isInvisible = inputVisibilityStore.getStore();
     return (
       <div className="element-wrapper">
         <div className="element element-left">
@@ -14,10 +25,13 @@ class MyComponent extends Component {
           <ToDos />
           <ToDos2 />
         </div>
-        <div className="element element-right">
-          <AnotherInputComponent />
-          <AnotherToDos />
-        </div>
+        {isInvisible && <VisibilityBtn storeName={visibilityStoreName} />}
+        {!isInvisible &&
+          <div className="element element-right">
+            <AnotherInputComponent />
+            <AnotherToDos />
+          </div>
+        }
       </div>
     );
   }
