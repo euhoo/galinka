@@ -1,4 +1,7 @@
-Very simple library for driving your app's state.  
+[![npm][npm]][npm-url] 
+[![Build Status][build-status]][build-status-url] 
+[![Maintainability][maintainability]][maintainability-url] 
+ 
 Данная библиотека вдохновлена Redux и использует некоторые ее идеи.  
 Пример использования на React.  
 
@@ -158,5 +161,13 @@ npm i galinka --save
             Если понадобится выключить историю - на любом инстансе класса Galinka вызови метод disableHistory();  
             Хорошей практикой считается указание всех параметров в отдельном файле.  
 <a href="#contents">к оглавлению</a>
+
+
+[npm]: https://img.shields.io/npm/v/galinka.svg
+[npm-url]: https://www.npmjs.com/package/galinka
+[build-status]: https://travis-ci.org/euhoo/galinka.svg?branch=master
+[build-status-url]: https://travis-ci.org/euhoo/galinka
+[maintainability]: https://api.codeclimate.com/v1/badges/f36f38ccabd9ea831096/maintainability
+[maintainability-url]: https://codeclimate.com/github/euhoo/galinka/maintainability
        
        
