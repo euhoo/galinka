@@ -9,7 +9,7 @@
 в которых используются обновленные данные
 
 3.Сейчас ре-рендеринг основан просто на запуске переданной в callback функции setState с ненужными данными. Как вариант можно обойтись без
-storeConstructors, а в коллбэке передавать функцию, изменяющую store и дальнейший вызов setState с необходимыми данными. Далее в рендере данные брыть
+reducers, а в коллбэке передавать функцию, изменяющую store и дальнейший вызов setState с необходимыми данными. Далее в рендере данные брыть
 сразу из state компонента. Мне этот способ не нравится по причине излишнего усложнения работы с хранилищем и смешивания данных, которые компонент
 может сам хранить в своем state с данными, которые туда будет дописывать galinka. Вариант с вызовом setState из callback при изменении данных кажется
 мне хоть и костылем, но костылем,не добавляющем лишней сложности. К тому же таким образом я использую уже оптимизированный метод react для перерисовки.
@@ -22,34 +22,29 @@ storeConstructors, а в коллбэке передавать функцию, �
  class Galinka {
 	constructor(storeName) {
 		this.storeName = storeName;
-		if (!this.__proto__.galinka) this.initStoreApp();
+		if (!this.__proto__.G) this.init();
 	}
-
-	updateStore = (type, data) => {
-		const storeConstructor = this.__proto__.galinka.storeConstructors[this.storeName][type];
-		const currentStore = this.__proto__.galinka.stores[this.storeName];
-		const updatedStore = storeConstructor(data, currentStore);
-		this.__proto__.galinka.stores[this.storeName] = updatedStore;
-		if (this.__proto__.galinka.settings.isHistory) {
-			/* отключаю пока history */
-			// this.addToHistory(this.__proto__.galinka.stores);
-			// const history = this.getFullHistory();
-			// console.log(history);
-		}
-		this.executeStateFuncs(this.__proto__.galinka.stateFuncs);
+	
+	init = () => {
+		this.__proto__.G = {
+			stores: {},
+			history: [],
+			reducers: {},
+			renderFuncs: {},
+			currentId: 1,
+			settings: {
+				isHistory: false,
+			},
+		};
 	};
 
-	enableHistory = () => {
-		this.__proto__.galinka.settings.isHistory = true;
-	};
+	addId = () => this.__proto__.G.currentId++;
+	enableHistory = () => this.__proto__.G.settings.isHistory = true;
+	disableHistory = () => this.__proto__.G.settings.isHistory = false;
 
-	disableHistory = () => {
-		this.__proto__.galinka.settings.isHistory = false;
-	};
-
-	executeStateFuncs = (arrOfFuncObjs = []) => {
-		arrOfFuncObjs.forEach(funcObj => {
-			const { stateFunc, storeName } = funcObj;
+	reRender = (renderFuncsObj = {}) => {
+		const arrOfFuncObjs = Object.values(renderFuncsObj);
+		arrOfFuncObjs.forEach(({ stateFunc, storeName }) => {
 			if (storeName === this.storeName || storeName === '') {
 				stateFunc();
 			}
@@ -60,65 +55,57 @@ storeConstructors, а в коллбэке передавать функцию, �
 		});
 	};
 
+	addReducer = ({ type, updateFunc }) => {
+		const id = this.addId();
+		this.__proto__.G.reducers[this.storeName] = this.__proto__.G.reducers[this.storeName] ?
+			{ ...this.__proto__.G.reducers[this.storeName], [type]: updateFunc, id }
+			:
+			{ [type]: updateFunc, id };
+	};
+
+	addReducers = (arrOfreducers) => arrOfreducers.forEach(this.addReducer);
+
+	addStateFunc = (stateFunc, storeName = this.storeName || '', id = 'notSetted') => this.__proto__.G.renderFuncs[id] = { stateFunc, storeName, id };
+
+	updateStore = (type, data) => {
+		const reducer = this.__proto__.G.reducers[this.storeName][type];
+		const currentStore = this.__proto__.G.stores[this.storeName];
+		this.__proto__.G.stores[this.storeName] = reducer(data, currentStore);;
+		if (this.__proto__.G.settings.isHistory) {
+			/* отключаю пока history */
+			// this.addToHistory(this.__proto__.G.stores);
+			// const history = this.getFullHistory();
+			// console.log(history);
+		}
+		this.reRender(this.__proto__.G.renderFuncs);
+	};
+
 	getStore = (storeName = this.storeName) => {
 		if (storeName) {
-			return this.__proto__.galinka.stores[storeName];
+			return this.__proto__.G.stores[storeName];
 		} else {
 			//создание инстанса без имени - ошибка
 			throw new Error('You made instance of Galinka and execute getStore method without store name')
 		}
 	};
 
-	getAllStores = () => this.__proto__.galinka.stores;
-
-	addStoreConstructor = (storeConstructorObj) => {
-		const { type, updateFunc } = storeConstructorObj;
-		this.__proto__.galinka.storeConstructors[this.storeName] = this.__proto__.galinka.storeConstructors[this.storeName] ?
-			{ ...this.__proto__.galinka.storeConstructors[this.storeName], [type]: updateFunc, id: this.addId() }
-			:
-			{ [type]: updateFunc, id: this.addId() };
-	};
-
-	addStoreConstructors = (arrOfStoreConstructors) =>	arrOfStoreConstructors.forEach(this.addStoreConstructor);
-
-	initStoreApp = () => {
-		this.__proto__.galinka = {
-			stores: {},
-			history: [],
-			storeConstructors: {},
-			stateFuncs: [],
-			uniqueIdCounter: 0,
-			settings: {
-				isHistory: false,
-			},
-		};
-	};
-
-	addId = () => {
-		this.__proto__.galinka.uniqueIdCounter += 1;
-		return this.__proto__.galinka.uniqueIdCounter;
-	};
-
-	addStateFunc = (stateFunc, storeName = this.storeName || '', id) => {
-		const funcs = this.__proto__.galinka.stateFuncs.filter(item => item.id !== id);
-		this.__proto__.galinka.stateFuncs = [...funcs, { stateFunc, storeName, id }];
-	} 
+	getAllStores = () => this.__proto__.G.stores;
 
 	/* отключаю пока history
 addToHistory = (currentAppStores) => {
-	if (!this.__proto__.galinka.settings.isHistory) {
+	if (!this.__proto__.G.settings.isHistory) {
 		throw new Error('History is disabled. For using this method please execute enableHistory method at Galinka settings or any instance of Galinka');
 	}
 	const current = clonedeep(currentAppStores);
-	this.__proto__.galinka.history = [...this.__proto__.galinka.history, current];
+	this.__proto__.G.history = [...this.__proto__.G.history, current];
 };
 
 
 	getFullHistory = () => {
-		if (!this.__proto__.galinka.settings.isHistory) {
+		if (!this.__proto__.G.settings.isHistory) {
 			throw new Error('History is disabled. For using this method please execute enableHistory method at Galinka settings or any instance of Galinka');
 		};
-		return this.__proto__.galinka.history;
+		return this.__proto__.G.history;
 	};
 	*/
 }

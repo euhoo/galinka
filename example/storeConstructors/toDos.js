@@ -28,7 +28,7 @@ export default () => {
 		updateFunc: del,
 	}; */
 
-	//toDos.addStoreConstructor(add);
-	//toDos.addStoreConstructor(del);
-	toDos.addStoreConstructors([{ type: 'add', updateFunc: add }, { type: 'del', updateFunc: del }]);
+	//toDos.addReducer(add);
+	//toDos.addReducer(del);
+	toDos.addReducers([{ type: 'add', updateFunc: add }, { type: 'del', updateFunc: del }]);
 };
