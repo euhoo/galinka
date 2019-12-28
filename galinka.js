@@ -79,9 +79,7 @@ storeConstructors, а в коллбэке передавать функцию, �
 			{ [type]: updateFunc, id: this.addId() };
 	};
 
-	addStoreConstructors = (arrOfStoreConstructors) => {
-		arrOfStoreConstructors.forEach((item) => this.addStoreConstructor(item));
-	};
+	addStoreConstructors = (arrOfStoreConstructors) =>	arrOfStoreConstructors.forEach(this.addStoreConstructor);
 
 	initStoreApp = () => {
 		this.__proto__.galinka = {
@@ -101,7 +99,10 @@ storeConstructors, а в коллбэке передавать функцию, �
 		return this.__proto__.galinka.uniqueIdCounter;
 	};
 
-	addStateFunc = (stateFunc, storeName = this.storeName || '') => this.__proto__.galinka.stateFuncs.push({ stateFunc, storeName, id: this.addId() });
+	addStateFunc = (stateFunc, storeName = this.storeName || '', id) => {
+		const funcs = this.__proto__.galinka.stateFuncs.filter(item => item.id !== id);
+		this.__proto__.galinka.stateFuncs = [...funcs, { stateFunc, storeName, id }];
+	} 
 
 	/* отключаю пока history
 addToHistory = (currentAppStores) => {

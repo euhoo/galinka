@@ -7,9 +7,7 @@ export default class ToDos extends Component {
     state = {
         data: '',
     };
-    componentDidMount = () => {
-        inputStore.addStateFunc(this.setState, 'toDos');
-    };
+    componentDidMount = () => inputStore.addStateFunc(() => this.setState({}), 'toDos', 'toDosID2');
 
     render() {
         console.log('rendering TODOS2');
