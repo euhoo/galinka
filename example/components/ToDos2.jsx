@@ -1,26 +1,18 @@
 import React, { Component } from "react";
-import G from '../../build/galinka';
+import { connect } from '../../galinka';
+import {toDosStore} from '../storeNames';
 
-const inputStore = G('toDos');
-const id = 'toDosID2';
-
-export default class ToDos extends Component {
-    state = {
-        data: '',
-    };
-    componentDidMount = () => inputStore.addRenderFunc(() => this.setState({}), 'toDos', id);
-
-    componentWillUnmount =() => inputStore.delRenderFunc(id);
-
+class ToDos extends Component {
     render() {
-        console.log('rendering TODOS2');
-        const data = inputStore.getStore();
-        const toDos = data ? data.map(item => <li key={item.id}>{item.data}</li>) : null;
+        // console.log('rendering TODOS2');
+        const store = this.props[toDosStore.name];
+        const toDosData = store ? store.map(item => <li key={item.id}>{item.data}</li>) : null;
         return (
             <React.Fragment>
                 <div> Todo2</div>
-                <ul>{toDos}</ul>
+                <ul>{toDosData}</ul>
             </React.Fragment>
         )
     }
 }
+export default connect(ToDos, toDosStore.name); 

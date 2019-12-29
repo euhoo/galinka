@@ -1,8 +1,6 @@
 import React, { Component } from "react";
-import G from '../../build/galinka';
-import uniqueid from 'lodash.uniqueid';
-
-const inputStore = G('anotherToDos');
+import {updateStore, getId} from '../../galinka';
+import {anotherToDosStore} from '../storeNames';
 
 export default class AnotherInputComponent extends Component {
     state = {
@@ -11,10 +9,10 @@ export default class AnotherInputComponent extends Component {
 
     inputHandler = (value) => {
         const data = {
-            id: uniqueid(),
+            id: getId(),
             data: value,
         };
-        inputStore.updateStore('add', data);
+        updateStore(anotherToDosStore.add, data);
         this.setState({ value: '' })
     };
 
@@ -24,7 +22,7 @@ export default class AnotherInputComponent extends Component {
     };
 
     render = () => {
-        console.log('rendering ANOTHER INPUT');
+        // console.log('rendering ANOTHER INPUT');
         const input = <input type="text" onChange={this.change} value={this.state.value}/>
         const btn = <div className="btn btn-success" onClick={() => this.inputHandler(this.state.value)}>ADD</div>
         return (

@@ -1,28 +1,19 @@
 import React, { Component } from "react";
-import G from '../../build/galinka';
-import VisibilityBtn from './VisibilityBtn.jsx';
+import { connect } from '../../galinka';
+import {anotherToDosStore} from '../storeNames';
 
-const inputStore = G('anotherToDos');
-const id = 'anotherToDoID1';
-
-export default class AnotherToDos extends Component {
-    state = {
-        data: '',
-    };
-    componentDidMount = () =>  inputStore.addRenderFunc(() => this.setState({}), 'anotherToDos', id);
-
-    componentWillUnmount =() => inputStore.delRenderFunc(id);
-
+class AnotherToDos extends Component {
     render() {
-        console.log('rendering ANOTHER TODOS');
-        const data = inputStore.getStore();
-        const toDos = data ? data.map(item => <li key={item.id}>{item.data}</li>) : null;
+        // console.log('rendering ANOTHER TODOS');
+        const store = this.props[anotherToDosStore.name];
+        const toDosData = store ? store.map(item => <li key={item.id}>{item.data}</li>) : null;
         return (
             <React.Fragment>
-                <VisibilityBtn storeName='anotherInputVisibility'/>
                 <div> another Todo</div>
-                <ul>{toDos}</ul>
+                <ul>{toDosData}</ul>
             </React.Fragment>
         )
     }
 }
+
+export default connect(AnotherToDos, anotherToDosStore.name);

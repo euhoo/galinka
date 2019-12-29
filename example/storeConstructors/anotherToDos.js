@@ -1,21 +1,19 @@
-import G from '../../build/galinka';
+import {anotherToDosStore} from '../storeNames';
+import {addStoreConstructors} from '../../galinka';
+
+const thisStoreStructure = [
+	{
+		id:'someUniqueId',
+		data:'some string data',
+	},
+	{
+		id:'someAnotherUniqueId',
+		data:'some another string data',
+	},
+];
 
 export default () => {
-
-	const thisStoreStructure = [
-		{
-			id:'someUniqueId',
-			data:'some string data',
-		},
-		{
-			id:'someAnotherUniqueId',
-			data:'some another string data',
-		},
-	];
-
-	const toDos = G('anotherToDos');
-
 	const del = (id, oldState = []) => oldState.filter(item => !(item.id === id));
 	const add = (data, oldState = []) => [data, ...oldState];
-	toDos.addReducers([{ type: 'add', updateFunc: add }, { type: 'del', updateFunc: del }]);
+	addStoreConstructors([[anotherToDosStore.add, add], [anotherToDosStore.del, del]], anotherToDosStore.name);
 };

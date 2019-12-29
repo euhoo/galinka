@@ -1,3 +1,4 @@
+import React, { Component } from "react";
 // import clonedeep from 'lodash.clonedeep';
 /*
 1.Остается вопрос, стоит ли оставить везде обращение через __proto__ или можно убрать.
@@ -20,99 +21,97 @@ reducers, а в коллбэке передавать функцию, измен
 */
 
 class Galinka {
-	constructor(storeName) {
-		this.storeName = storeName;
+	constructor() {
 		if (!this.__proto__.G) this.init();
 	}
+
+	addStoreConstructors = (arrOfConstructors, storeName) => {
+		// [['type1', func1], ['type2', func2]];
+
+		arrOfConstructors.forEach(item => {
+			const id = this.getId();
+			const [type, updateFunc] = item;
+			const storeConstructor = { updateFunc, id, storeName };
+			this.__proto__.G.storeConstructors[type] ?
+				this.__proto__.G.storeConstructors[type].push(storeConstructor)
+				:
+				this.__proto__.G.storeConstructors[type] = [storeConstructor]
+		})
+		// {'add':[funcObj1, funcobj2], 'del':[funcObj3]}
+	};
+
+	updateStore = (type, data) => {
+		const arrOfStoreConstructors = this.__proto__.G.storeConstructors[type];
+		arrOfStoreConstructors.forEach(storeConstructorObj => {
+			const { updateFunc, storeName } = storeConstructorObj;
+			const currentStore = this.__proto__.G.stores[storeName];
+			this.__proto__.G.stores[storeName] = updateFunc(data, currentStore);
+			this.reRender(this.__proto__.G.renderFuncs, storeName);
+		})
+	};
 
 	init = () => {
 		this.__proto__.G = {
 			stores: {},
-			history: [],
-			reducers: {},
-			renderFuncs: {},
+			storeConstructors: {},
 			currentId: 1,
+			renderFuncs: {},
 			settings: {
 				isHistory: false,
 			},
 		};
 	};
 
+	getStore = (storeName) => this.__proto__.G.stores[storeName];
+
+	getAllStores = () => this.__proto__.G.stores;
+
 	delProperty = (obj, id) => {
 		// в будущем реализовать что-то попроизводительнее
 		delete obj[id];
 	};
 
-	addId = () => this.__proto__.G.currentId++;
-	enableHistory = () => this.__proto__.G.settings.isHistory = true;
-	disableHistory = () => this.__proto__.G.settings.isHistory = false;
+	getId = () => this.__proto__.G.currentId++;
 
-	reRender = (renderFuncsObj = {}) => {
+	reRender = (renderFuncsObj = {}, name) => {
 		const arrOfFuncObjs = Object.values(renderFuncsObj);
 		arrOfFuncObjs.forEach(({ stateFunc, storeName }) => {
-			if (storeName === this.storeName || storeName === '') {
+			if (storeName === name) {
 				stateFunc();
-			}
-			if (storeName === '') {
-				//создание инстанса без имени - ошибка
-				throw new Error('You made instance of Galinka and execute addRenderFunc method without store name')
 			}
 		});
 	};
 
-	addReducer = ({ type, updateFunc }) => {
-		const id = this.addId();
-		this.__proto__.G.reducers[this.storeName] = this.__proto__.G.reducers[this.storeName] ?
-			{ ...this.__proto__.G.reducers[this.storeName], [type]: updateFunc, id }
-			:
-			{ [type]: updateFunc, id };
-	};
-
-	addReducers = (arrOfreducers) => arrOfreducers.forEach(this.addReducer);
-
-	addRenderFunc = (stateFunc, storeName = this.storeName || '', id = 'notSetted') => this.__proto__.G.renderFuncs[id] = { stateFunc, storeName, id };
+	addRenderFunc = (stateFunc, storeName, id) => this.__proto__.G.renderFuncs[id] = { stateFunc, storeName, id };
 	delRenderFunc = (id) => this.delProperty(this.__proto__.G.renderFuncs, id)
 
-	updateStore = (type, data) => {
-		const reducer = this.__proto__.G.reducers[this.storeName][type];
-		const currentStore = this.__proto__.G.stores[this.storeName];
-		this.__proto__.G.stores[this.storeName] = reducer(data, currentStore);
-		if (this.__proto__.G.settings.isHistory) {
-			/* отключаю пока history */
-			// this.addToHistory(this.__proto__.G.stores);
-			// const history = this.getFullHistory();
-			// console.log(history);
-		}
-		this.reRender(this.__proto__.G.renderFuncs);
-	};
-
-	getStore = (storeName = this.storeName) => {
-		if (storeName) {
-			return this.__proto__.G.stores[storeName];
-		} else {
-			//создание инстанса без имени - ошибка
-			throw new Error('You made instance of Galinka and execute getStore method without store name')
-		}
-	};
-
-	getAllStores = () => this.__proto__.G.stores;
-
-	/* отключаю пока history
-addToHistory = (currentAppStores) => {
-	if (!this.__proto__.G.settings.isHistory) {
-		throw new Error('History is disabled. For using this method please execute enableHistory method at Galinka settings or any instance of Galinka');
-	}
-	const current = clonedeep(currentAppStores);
-	this.__proto__.G.history = [...this.__proto__.G.history, current];
-};
-
-
-	getFullHistory = () => {
-		if (!this.__proto__.G.settings.isHistory) {
-			throw new Error('History is disabled. For using this method please execute enableHistory method at Galinka settings or any instance of Galinka');
-		};
-		return this.__proto__.G.history;
-	};
-	*/
 }
+
+const G = new Galinka();
+
 export default (name) => new Galinka(name);
+
+export const addStoreConstructors = (arrOfConstructors, storeName) => G.addStoreConstructors(arrOfConstructors, storeName);
+export const updateStore = (type, data) => G.updateStore(type, data);
+export const getId = () => G.getId();
+
+export const connect = (WrappedComponent, storeName) => {
+	const id = G.getId();
+	class Wrapper extends Component {
+		constructor(componentProps) {
+			super();
+			this.settedProps = componentProps.props || {};
+			// this.settedProps[storeName] = store;	
+		}
+		componentDidMount = () => G.addRenderFunc(() => { this.setState({}) }, storeName, id);
+		componentWillUnmount = () => G.delRenderFunc(id);
+		render() {
+			const store = G.getStore(storeName) || null;
+			const allProps = {...this.settedProps, [storeName]: store}
+			return (
+				<WrappedComponent {...allProps} />
+			)
+		}
+	}
+	return Wrapper
+}
