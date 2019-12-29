@@ -12,7 +12,7 @@ class MyComponent extends Component {
       <div className="element-wrapper">
         <div className="element element-left">
           <InputComponent />
-          <ToDos props={{type:'asdf'}}/>
+          <ToDos props={{type:'asdf', test:'testing throwing own props'}}/>
           <ToDos2 />
         </div>
           <div className="element element-right">

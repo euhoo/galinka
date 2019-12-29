@@ -1,5 +1,5 @@
 import {anotherToDosStore} from '../storeNames';
-import {addStoreConstructors} from '../../galinka';
+import {addReducers} from '../../galinka';
 
 const thisStoreStructure = [
 	{
@@ -15,5 +15,5 @@ const thisStoreStructure = [
 export default () => {
 	const del = (id, oldState = []) => oldState.filter(item => !(item.id === id));
 	const add = (data, oldState = []) => [data, ...oldState];
-	addStoreConstructors([[anotherToDosStore.add, add], [anotherToDosStore.del, del]], anotherToDosStore.name);
+	addReducers([[anotherToDosStore.add, add], [anotherToDosStore.del, del]], anotherToDosStore.name);
 };

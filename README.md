@@ -10,7 +10,7 @@
 <a href="#install">1.Установка</a>    
 <a href="#driver">2.Компонент, загружающий данные в хранилище.</a>    
 <a href="#driven">3.Компонент, получающий данные из хранилища.</a>  
-<a href="#storeConstructor">4.Настройка storeConstructors. аналог reducers в redux.</a>  
+<a href="#reducer">4.Настройка reducers. аналог reducers в redux.</a>  
 <a href="#features">5.Дополнительные возможности.</a>  
 
   
@@ -83,9 +83,9 @@ npm i galinka --save
         Именно это место связывает хранилище и фреймворк(библиотеку react в данном случае)  
 
 <a href="#contents">к оглавлению</a>
-<h3 id="storeConstructor">4.Настройка функций обработки хранилищ - storeConstructors:</h3>  
+<h3 id="reducer">4.Настройка функций обработки хранилищ - reducers:</h3>  
        Удобно выполнять в отдельной папке в отдельных файлах для каждого store.  
-       (В примере это /examples/storeConstructors/toDos.js)  
+       (В примере это /examples/reducers/toDos.js)  
        а)импортируй G  
            ```js
            import G from '../../galinka';
