@@ -12,4 +12,4 @@ const ToDos = (props) => {
         </React.Fragment>
     )
 }
-export default connect(ToDos, toDosStore.name); 
+export default connect(ToDos, toDosStore.name, React); 

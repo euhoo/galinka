@@ -1,5 +1,3 @@
-import React, { Component } from "react";
-
 class Galinka {
 	constructor() {
 		if (!this.__proto__.G) this.init();
@@ -50,7 +48,7 @@ export const addReducers = (arrOfReducers, storeName) => G.addReducers(arrOfRedu
 export const updateStore = (type, data) => G.updateStore(type, data);
 export const getId = () => G.getId();
 
-export const connect = (WrappedComponent, storeName) => class Wrapper extends Component {
+export const connect = (WrappedComponent, storeName, React) => class Wrapper extends React.Component {
 	constructor(wrappedComponentProps) {
 		super();
 		this.wrappedComponentProps = wrappedComponentProps.props || {};

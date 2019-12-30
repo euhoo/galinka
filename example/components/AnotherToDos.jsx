@@ -16,4 +16,4 @@ class AnotherToDos extends Component {
     }
 }
 
-export default connect(AnotherToDos, anotherToDosStore.name);
+export default connect(AnotherToDos, anotherToDosStore.name, React);
